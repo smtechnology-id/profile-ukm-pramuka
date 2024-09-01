@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\News;
 use App\Models\Event;
+use App\Models\Lesson;
+use App\Models\MemberWork;
 use App\Models\MentorWork;
-use Illuminate\Support\Str;
+use App\Models\News;
 use App\Models\Registration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -171,7 +173,35 @@ class AdminController extends Controller
         $mentorWork->delete();
         return redirect()->route('admin.mentor-work')->with('success', 'Mentor Work deleted successfully');
     }
-    
+
+    // Member Work
+    public function memberWork()
+    {
+        $memberWork = MemberWork::with('user')->get();
+        $memberWorks = MemberWork::all();
+        return view('admin.member-work', compact('memberWork', 'memberWorks'));
+    }
+
+    public function memberWorkApprove($id)
+    {
+        $memberWork = MemberWork::find($id);
+        $memberWork->status = 'active';
+        $memberWork->save();
+        return redirect()->route('admin.member-work')->with('success', 'Member Work approved successfully');
+    }
+
+    public function memberWorkRejected($id)
+    {
+        $memberWork = MemberWork::find($id);
+        $memberWork->status = 'draft';
+        $memberWork->save();
+        return redirect()->route('admin.member-work')->with('success', 'Member Work rejected successfully');
+    }
+
+
+
+    // event
+
     public function event()
     {
         $event = Event::all();
@@ -260,4 +290,79 @@ class AdminController extends Controller
         return view('admin.registration-detail', compact('registration', 'event'));
     }
 
+
+    // Lesson
+    public function lesson()
+    {
+        $lesson = Lesson::latest()->get();
+        return view('admin.lesson', compact('lesson'));
+    }
+
+    public function lessonCreate()
+    {
+        return view('admin.lesson-create');
+    }
+
+    public function lessonStore(Request $request)
+    {
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'file' => 'required',
+            'external_link' => 'required',
+        ]);
+
+
+        $lesson = new Lesson();
+        $lesson->title = $request->title;
+        $lesson->description = $request->description;
+
+        $lesson->external_link = $request->external_link;
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('lesson', $fileName, 'public');
+            $lesson->file = $fileName;
+        }
+        $lesson->save();
+        return redirect()->route('admin.lesson')->with('success', 'Lesson created successfully');
+    }
+
+    public function lessonEdit($id)
+    {
+        $lesson = Lesson::find($id);
+        return view('admin.lesson-edit', compact('lesson'));
+    }
+
+    public function lessonUpdate(Request $request)
+    {
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'external_link' => 'required',
+        ]);
+        
+        $lesson = Lesson::find($request->id);
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('lesson', $fileName, 'public');
+            $lesson->file = $fileName;
+        }
+        $lesson->title = $request->title;
+        $lesson->description = $request->description;
+        $lesson->external_link = $request->external_link;
+        $lesson->save();
+        return redirect()->route('admin.lesson')->with('success', 'Lesson updated successfully');
+    }
+
+    public function lessonDestroy($id)
+    {
+        $lesson = Lesson::find($id);
+        $file = $lesson->file;
+        Storage::delete('public/lesson/' . $file);
+        $lesson->delete();
+        return redirect()->route('admin.lesson')->with('success', 'Lesson deleted successfully');
+    }
 }

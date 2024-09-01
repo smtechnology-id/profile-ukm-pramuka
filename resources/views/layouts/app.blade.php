@@ -91,6 +91,10 @@
                             <a href="{{ route('admin.mentor-work') }}" class="active"><i
                                     class="material-icons-two-tone">work</i>Karya Pembina</a>
                         </li>
+                        <li class="@yield('active_member_work')">
+                            <a href="{{ route('admin.member-work') }}" class="active"><i
+                                    class="material-icons-two-tone">work</i>Karya Anggota</a>
+                        </li>
                         <li class="@yield('active_event')">
                             <a href="{{ route('admin.event') }}" class="active"><i
                                     class="material-icons-two-tone">event</i>Event</a>
@@ -98,6 +102,32 @@
                         <li class="@yield('active_registration')">
                             <a href="{{ route('admin.registration') }}" class="active"><i
                                     class="material-icons-two-tone">person</i>Pendaftaran Event</a>
+                        </li>
+
+                        <li class="@yield('active_lesson')">
+                            <a href="{{ route('admin.lesson') }}" class="active"><i
+                                    class="material-icons-two-tone">book</i>Materi</a>
+                        </li>
+                    @elseif(Auth::user()->level == 'user')
+                        <li class="@yield('active_dashboard')">
+                            <a href="{{ route('user.dashboard') }}" class="active"><i
+                                    class="material-icons-two-tone">dashboard</i>Dashboard</a>
+                        </li>
+                        <li class="@yield('active_event')">
+                            <a href="{{ route('user.event') }}" class="active"><i
+                                    class="material-icons-two-tone">event</i>Event</a>
+                        </li>
+                        <li class="@yield('active_registration')">
+                            <a href="{{ route('user.registration') }}" class="active"><i
+                                    class="material-icons-two-tone">history</i>Riwayat Pendaftaran Event</a>
+                        </li>
+                        <li class="@yield('active_member_work')">
+                            <a href="{{ route('user.member-work') }}" class="active"><i
+                                    class="material-icons-two-tone">work</i>Karya Anggota</a>
+                        </li>
+                        <li class="@yield('active_lesson')">
+                            <a href="{{ route('user.lesson') }}" class="active"><i
+                                    class="material-icons-two-tone">book</i>Materi</a>
                         </li>
                     @endif
 

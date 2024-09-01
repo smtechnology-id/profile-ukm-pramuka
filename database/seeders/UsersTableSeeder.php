@@ -19,12 +19,18 @@ class UsersTableSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => Hash::make('admin'),
             'level' => 'admin',
+            'nim' => '1234567890',
+            'birth_date' => '2000-01-01',
+            'birth_place' => 'Jakarta',
         ]);
         User::create([
             'name' => 'User',
             'email' => 'user@gmail.com',
             'password' => Hash::make('user'),
             'level' => 'user',
+            'nim' => '1234567890',
+            'birth_date' => '2000-01-01',
+            'birth_place' => 'Jakarta',
         ]);
     }
 }

@@ -21,10 +21,10 @@
                             @foreach ($registration as $reg)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $reg->name }}</td>
-                                    <td>{{ $reg->nim }}</td>
-                                    <td>{{ $reg->tempat_tanggal_lahir }}</td>
-                                    <td>{{ $reg->motivasi }}</td>
+                                    <td>{{ $reg->user->name }}</td>
+                                    <td>{{ $reg->user->nim }}</td>
+                                    <td>{{ $reg->user->birth_place }}, {{ $reg->user->birth_date }}</td>
+                                    <td>{{ $reg->motivation }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

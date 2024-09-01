@@ -22,7 +22,19 @@ class User extends Authenticatable
         'email',
         'password',
         'level',
+        'nim',
+        'birth_place',
+        'birth_date',
+        'photo',
     ];
+    public function registration()
+    {
+        return $this->hasMany(Registration::class);
+    }
+
+    public function commentDiscussion() {
+        return $this->hasMany(CommentDiscussion::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.

@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Website Sistem Informasi UKM Pramuka merupakan website yang dibuat untuk mempermudah anggota dalam mengakses informasi UKM Pramuka Di Universitas Negeri Surabaya">
+    <meta name="description"
+        content="Website Sistem Informasi UKM Pramuka merupakan website yang dibuat untuk mempermudah anggota dalam mengakses informasi UKM Pramuka Di Universitas Negeri Surabaya">
     <meta name="keywords" content="admin,dashboard">
     <meta name="author" content="stacks">
     <!-- The above 6 meta tags *must* come first in the head; any other head content must come *after* these tags -->
@@ -44,30 +45,53 @@
                 <a href="{{ route('index') }}">Website Sistem Informasi UKM Pramuka</a>
             </div>
             <p class="auth-description">Silahkan login untuk melanjutkan.</p>
-            @if (session('error'))
-                <div class="alert alert-danger">
-                    {{ session('error') }}
-                </div>
-            @endif
+
             <form action="{{ route('loginPost') }}" method="post">
                 @csrf
+                @if (session('success'))
+                <div class="alert alert-custom" role="alert">
+                    <div class="custom-alert-icon icon-primary"><i class="material-icons-outlined">done</i></div>
+                    <div class="alert-content">
+                        <span class="alert-title">{{ session('success') }}</span>
+                    </div>
+                </div>
+                @endif
+                @if (session('error'))
+                <div class="alert alert-custom" role="alert">
+                    <div class="custom-alert-icon icon-warning"><i class="material-icons-outlined">error</i></div>
+                    <div class="alert-content">
+                        <span class="alert-title">{{ session('error') }}</span>
+                    </div>
+                </div>
+                @endif
+                @if ($errors->any())
+                <div class="alert alert-custom" role="alert">
+                    <div class="custom-alert-icon icon-warning"><i class="material-icons-outlined">error</i></div>
+                    <div class="alert-content">
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
                 <div class="auth-credentials m-b-xxl">
                     <label for="signInEmail" class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control m-b-md" id="signInEmail" aria-describedby="signInEmail"
-                        placeholder="Masukkan Email">
+                    <input type="email" name="email" class="form-control m-b-md" id="signInEmail"
+                        aria-describedby="signInEmail" placeholder="Masukkan Email">
 
                     <label for="signInPassword" class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" id="signInPassword" aria-describedby="signInPassword"
-                        placeholder="Masukkan Password">
+                    <input type="password" name="password" class="form-control" id="signInPassword"
+                        aria-describedby="signInPassword" placeholder="Masukkan Password">
                 </div>
 
                 <div class="auth-submit">
                     <button class="btn btn-primary" type="submit">Login</button>
-                    <a href="#" class="auth-forgot-password float-end">Lupa Password?</a>
+                    <a href="{{ route('register') }}"
+                        class="auth-forgot-password float-end btn btn-secondary">Register</a>
                 </div>
             </form>
             <div class="divider"></div>
-            
+
         </div>
     </div>
 
